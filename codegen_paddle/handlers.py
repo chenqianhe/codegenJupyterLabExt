@@ -7,6 +7,8 @@ from jupyter_server.utils import url_path_join
 import tornado
 from tornado.web import StaticFileHandler
 
+from .codegen import gen_code
+
 
 class RouteHandler(APIHandler):
     # The following decorator should be present on all verb methods (head, get, post,
@@ -19,7 +21,9 @@ class RouteHandler(APIHandler):
     @tornado.web.authenticated
     def post(self):
         input_data = self.get_json_body()
-        data = {"received": "{}".format(input_data["code"])}
+        prompt = input_data["code"]
+        res = gen_code(prompt)
+        data = {"received": "{}".format(res)}
         self.finish(json.dumps(data))
 
 
@@ -45,4 +49,3 @@ def setup_handlers(web_app, url_path):
     )
     handlers = [("{}/(.*)".format(doc_url), StaticFileHandler, {"path": doc_dir})]
     web_app.add_handlers(".*$", handlers)
-
