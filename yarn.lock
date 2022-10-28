@@ -1708,7 +1708,7 @@
 
 "@jupyterlab/settingregistry@^3.5.0":
   version "3.5.0"
-  resolved "https://registry.npmjs.org/@jupyterlab/settingregistry/-/settingregistry-3.5.0.tgz"
+  resolved "https://registry.yarnpkg.com/@jupyterlab/settingregistry/-/settingregistry-3.5.0.tgz#2a6a0c2771c61643ab4aff9355ac863b4c8fc0ab"
   integrity sha512-y9H9U4iMVfe2btImp5DR9mGAs36Sow0hI6ajK61bhHVJ4CumYdFBd8drrQGuYcyk/Y4ypU5HO9EaLBQU3CLCug==
   dependencies:
     "@jupyterlab/statedb" "^3.5.0"

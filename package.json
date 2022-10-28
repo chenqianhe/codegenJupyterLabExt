@@ -18,6 +18,7 @@
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
+    "schema/**/*.json",
     "style/**/*.{css,js,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
   ],
   "main": "lib/index.js",
@@ -55,7 +56,8 @@
   },
   "dependencies": {
     "@jupyterlab/application": "^3.1.0",
-    "@jupyterlab/completer": "^3.5.0"
+    "@jupyterlab/completer": "^3.5.0",
+    "@jupyterlab/settingregistry": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

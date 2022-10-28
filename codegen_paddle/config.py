@@ -1,5 +1,5 @@
 class DefaultConfig:
-    model_name_or_path = "Salesforce/codegen-350M-mono"
+    model_name_or_path = "Salesforce/codegen-350M-mono/"
     device = "cpu"
     temperature = 0.5
     top_k = 10

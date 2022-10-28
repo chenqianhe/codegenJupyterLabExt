@@ -9,6 +9,8 @@ import {
   KernelConnector
 } from '@jupyterlab/completer';
 
+import { ISettingRegistry } from '@jupyterlab/settingregistry';
+
 import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
 import { requestAPI } from './handler';
@@ -36,13 +38,46 @@ namespace CommandIDs {
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'codegen-paddle:plugin',
   autoStart: true,
-  requires: [ICompletionManager, INotebookTracker],
+  requires: [ICompletionManager, INotebookTracker, ISettingRegistry],
   activate: async (
     app: JupyterFrontEnd,
     completionManager: ICompletionManager,
-    notebooks: INotebookTracker
+    notebooks: INotebookTracker,
+    settings: ISettingRegistry
   ) => {
+    let max_length = 16;
+    let min_length = 0;
+    let repetition_penalty = 1.0;
+    let top_p = 1.0;
+    let top_k = 10;
+    let temperature = 0.5;
+    let device = 'cpu';
+    let model = 'Salesforce/codegen-350M-mono/';
     console.log('JupyterLab extension codegen-paddle is activated!');
+    await settings.load('codegen-paddle:completer').then(setting => {
+      // Read the settings
+      console.log(setting);
+      max_length = setting.get('max_length').composite as number;
+      min_length = setting.get('min_length').composite as number;
+      repetition_penalty = setting.get('repetition_penalty')
+        .composite as number;
+      top_p = setting.get('top_p').composite as number;
+      top_k = setting.get('top_k').composite as number;
+      temperature = setting.get('temperature').composite as number;
+      device = setting.get('device').composite as string;
+      model = setting.get('model').composite as string;
+    });
+
+    console.log({
+      max_length,
+      min_length,
+      repetition_penalty,
+      top_p,
+      top_k,
+      temperature,
+      device,
+      model
+    });
 
     // GET request
     try {
