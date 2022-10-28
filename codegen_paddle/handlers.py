@@ -21,9 +21,9 @@ class RouteHandler(APIHandler):
     @tornado.web.authenticated
     def post(self):
         input_data = self.get_json_body()
-        prompt = input_data["code"]
+        prompt = input_data["prompt"]
         res = gen_code(prompt)
-        data = {"received": "{}".format(res)}
+        data = {"res": "{}".format(res)}
         self.finish(json.dumps(data))
 
 
