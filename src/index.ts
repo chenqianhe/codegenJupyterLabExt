@@ -3,7 +3,32 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
+import {
+  ContextConnector,
+  ICompletionManager,
+  KernelConnector
+} from '@jupyterlab/completer';
+
+import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
+
 import { requestAPI } from './handler';
+
+import { CompletionConnector } from './connector';
+
+import { CustomConnector } from './customconnector';
+
+/**
+ * The command IDs used by the console plugin.
+ */
+namespace CommandIDs {
+  export const invoke = 'completer:invoke';
+
+  export const invokeNotebook = 'completer:invoke-notebook';
+
+  export const select = 'completer:select';
+
+  export const selectNotebook = 'completer:select-notebook';
+}
 
 /**
  * Initialization data for the codegen-paddle extension.
@@ -11,7 +36,12 @@ import { requestAPI } from './handler';
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'codegen-paddle:plugin',
   autoStart: true,
-  activate: async (app: JupyterFrontEnd) => {
+  requires: [ICompletionManager, INotebookTracker],
+  activate: async (
+    app: JupyterFrontEnd,
+    completionManager: ICompletionManager,
+    notebooks: INotebookTracker
+  ) => {
     console.log('JupyterLab extension codegen-paddle is activated!');
 
     // GET request
@@ -22,19 +52,68 @@ const plugin: JupyterFrontEndPlugin<void> = {
       console.error(`Error on GET /codegen-paddle-backend/hello.\n${reason}`);
     }
 
-    // POST request
-    const dataToSend = { name: 'George' };
-    try {
-      const reply = await requestAPI<any>('hello', {
-        body: JSON.stringify(dataToSend),
-        method: 'POST'
-      });
-      console.log(reply);
-    } catch (reason) {
-      console.error(
-        `Error on POST /codegen-paddle-backend/hello ${dataToSend}.\n${reason}`
-      );
-    }
+    // Modelled after completer-extension's notebooks plugin
+    notebooks.widgetAdded.connect(
+      (sender: INotebookTracker, panel: NotebookPanel) => {
+        let editor = panel.content.activeCell?.editor ?? null;
+        const session = panel.sessionContext.session;
+        const options = { session, editor };
+        const connector = new CompletionConnector([]);
+        const handler = completionManager.register({
+          connector,
+          editor,
+          parent: panel
+        });
+
+        const updateConnector = () => {
+          editor = panel.content.activeCell?.editor ?? null;
+          options.session = panel.sessionContext.session;
+          options.editor = editor;
+          handler.editor = editor;
+
+          const kernel = new KernelConnector(options);
+          const context = new ContextConnector(options);
+          const custom = new CustomConnector(options);
+          handler.connector = new CompletionConnector([
+            kernel,
+            context,
+            custom
+          ]);
+        };
+
+        // Update the handler whenever the prompt or session changes
+        panel.content.activeCellChanged.connect(updateConnector);
+        panel.sessionContext.sessionChanged.connect(updateConnector);
+      }
+    );
+
+    // Add notebook completer command.
+    app.commands.addCommand(CommandIDs.invokeNotebook, {
+      execute: () => {
+        const panel = notebooks.currentWidget;
+        if (panel && panel.content.activeCell?.model.type === 'code') {
+          return app.commands.execute(CommandIDs.invoke, { id: panel.id });
+        }
+      }
+    });
+
+    // Add notebook completer select command.
+    app.commands.addCommand(CommandIDs.selectNotebook, {
+      execute: () => {
+        const id = notebooks.currentWidget && notebooks.currentWidget.id;
+
+        if (id) {
+          return app.commands.execute(CommandIDs.select, { id });
+        }
+      }
+    });
+
+    // Set enter key for notebook completer select command.
+    app.commands.addKeyBinding({
+      command: CommandIDs.selectNotebook,
+      keys: ['Enter'],
+      selector: '.jp-Notebook .jp-mod-completer-active'
+    });
   }
 };
 
