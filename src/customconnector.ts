@@ -5,17 +5,17 @@ import { requestAPI } from './handler';
 
 /**
  * Get code from backend.
- * @param partCode
+ * @param prompt
  */
-async function codeGen(partCode: string): Promise<string> {
-  const dataToSend = { code: partCode };
+async function codeGen(prompt: string): Promise<string> {
+  const dataToSend = { prompt: prompt };
   try {
-    const reply = await requestAPI<any>('codegen', {
+    const postCode = await requestAPI<any>('codegen', {
       body: JSON.stringify(dataToSend),
       method: 'POST'
     });
-    console.log(reply);
-    return partCode;
+    console.log(postCode);
+    return postCode.res;
   } catch (reason) {
     console.error(
       `Error on POST /codegen-paddle-backend/codegen ${dataToSend}.\n${reason}`
@@ -106,20 +106,25 @@ namespace Private {
       if (lastLine.includes('#')) {
         haveComment = true;
       }
-    }
-    if (haveComment) {
       autoGenCode = await codeGen(lastLine + '\n' + thisLine);
     } else {
       autoGenCode = await codeGen(thisLine);
     }
+    console.log('haveComment', haveComment);
+
+    /**
+     * Adjustment strategy
+     */
+    // if (haveComment) {
+    //   autoGenCode = await codeGen(lastLine + '\n' + thisLine);
+    // } else {
+    //   autoGenCode = await codeGen(thisLine);
+    // }
 
     // Create a list of matching tokens. The last one is used for space occupying.
     const tokenList = [
       {
-        value:
-          cursorToken.value +
-          autoGenCode +
-          'Magic\nMagicMagicMagicMagicMagic\nMagicMagicMagicMagicMagic\nMagicMagicMagic\n\n',
+        value: cursorToken.value + autoGenCode,
         offset: cursorToken.offset,
         type: 'codegen'
       },
