@@ -1,6 +1,6 @@
 {
   "title": "Codegen-Paddle",
-  "description": "Codegen-paddle Completer.",
+  "description": "Code-gen Ext",
   "jupyter.lab.shortcuts": [
     {
       "command": "completer:invoke-notebook",
@@ -9,6 +9,14 @@
     }
   ],
   "properties": {
+    "tip": {
+      "title": "Modify Tip",
+      "description": "Modify Tip.\n修改提示",
+      "default": "修改下方设置后需重启Jupyter才能生效",
+      "type": "string",
+      "enum": ["修改下方设置后需重启Jupyter才能生效",
+        "After modification, restart Jupyter to take effect"]
+    },
     "model": {
       "title": "Model",
       "description": "Select which model to use.\n选择要使用的模型。\nmono: 基于Python数据集BIGPYTHON训练\nnl: 基于自然语言数据集THEPILE训练\nmulti: 基于多编程语言数据集BIGQUERY训练",
@@ -17,10 +25,16 @@
       "enum": [
         "Salesforce/codegen-350M-mono/",
         "Salesforce/codegen-2B-mono/",
+        "Salesforce/codegen-6B-mono/",
+        "Salesforce/codegen-16B-mono/",
         "Salesforce/codegen-350M-nl/",
         "Salesforce/codegen-2B-nl/",
+        "Salesforce/codegen-6B-nl/",
+        "Salesforce/codegen-16B-nl/",
         "Salesforce/codegen-350M-multi/",
-        "Salesforce/codegen-2B-multi/"
+        "Salesforce/codegen-2B-multi/",
+        "Salesforce/codegen-6B-multi/",
+        "Salesforce/codegen-16B-multi/"
       ]
     },
     "device": {
