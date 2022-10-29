@@ -14,8 +14,10 @@
       "description": "Modify Tip.\n修改提示",
       "default": "修改下方设置后需重启Jupyter才能生效",
       "type": "string",
-      "enum": ["修改下方设置后需重启Jupyter才能生效",
-        "After modification, restart Jupyter to take effect"]
+      "enum": [
+        "修改下方设置后需重启Jupyter才能生效",
+        "After modification, restart Jupyter to take effect"
+      ]
     },
     "model": {
       "title": "Model",
