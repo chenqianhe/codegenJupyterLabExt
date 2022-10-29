@@ -12,3 +12,7 @@ class DefaultConfig:
     use_faster = False
     use_fp16_decoding = False
     default_dtype = "float16" if use_faster and use_fp16_decoding else "float32"
+
+
+class ModifiedConfig(DefaultConfig):
+    pass

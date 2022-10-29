@@ -1,21 +1,10 @@
 import time
-import paddle
 from paddlenlp.utils.log import logger
-from paddlenlp.transformers import CodeGenTokenizer, CodeGenForCausalLM
-
-from .config import DefaultConfig
-
-generate_config = DefaultConfig()
-paddle.set_device(generate_config.device)
-paddle.set_default_dtype(generate_config.default_dtype)
-
-tokenizer = CodeGenTokenizer.from_pretrained(generate_config.model_name_or_path)
-model = CodeGenForCausalLM.from_pretrained(
-    generate_config.model_name_or_path,
-    load_state_as_np=generate_config.load_state_as_np)
 
 
-def gen_code(prompt: str) -> str:
+def gen_code(prompt: str, model, tokenizer, generate_config) -> str:
+    if model is None or tokenizer is None or generate_config is None:
+        return ''
     start_time = time.time()
     logger.info("Start generating code")
     tokenized = tokenizer(prompt,

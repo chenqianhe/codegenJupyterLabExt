@@ -79,6 +79,28 @@ const plugin: JupyterFrontEndPlugin<void> = {
       model
     });
 
+    const initParams = {
+      max_length,
+      min_length,
+      repetition_penalty,
+      top_p,
+      top_k,
+      temperature,
+      device,
+      model
+    };
+    try {
+      const res = await requestAPI<any>('init-model', {
+        body: JSON.stringify(initParams),
+        method: 'POST'
+      });
+      console.log(res);
+    } catch (reason) {
+      console.error(
+        `Error on POST /codegen-paddle-backend/init-model ${initParams}.\n${reason}`
+      );
+    }
+
     // GET request
     try {
       const data = await requestAPI<any>('hello');
