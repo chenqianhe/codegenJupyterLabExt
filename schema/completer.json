@@ -1,6 +1,6 @@
 {
   "title": "Codegen-Paddle",
-  "description": "Code-gen Ext",
+  "description": "Codegen Settings.",
   "jupyter.lab.shortcuts": [
     {
       "command": "completer:invoke-notebook",
