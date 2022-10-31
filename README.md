@@ -7,6 +7,12 @@
 
 A code generation JupyterLab extension based on [CodeGen model](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/examples/code_generation/codegen) and [PaddlePaddle](https://www.paddlepaddle.org.cn/en), which provides **Python code fragment generation**, **Python code generation based on comments**, and other functions.
 
+## Modification and validation of parameter settings
+
+CodeGen extension provides parameter modification directly on the setting page of JupyterLab. **However, please note that after parameter modification, restart JupyterLab to make the modification effective.**
+
+This is because the update after parameter modification involves the reload of the backend model.
+
 ## Requirements
 
 - JupyterLab >= 3.0
