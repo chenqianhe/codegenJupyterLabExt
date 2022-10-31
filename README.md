@@ -1,7 +1,11 @@
-# codegen_paddle
+[简体中文🀄](./README_cn.md) |  **English**🌎
+# CodeGen JupyterLab Extension
 
-[![Github Actions Status](https://github.com/chenqianhe/codegenJupyterLabExt/workflows/Build/badge.svg)](https://github.com/chenqianhe/codegenJupyterLabExt/actions/workflows/build.yml)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/chenqianhe/codegenJupyterLabExt/main?urlpath=lab)
-A code-gen JupyterLab extension with PaddlePaddle.
+<!--  [![Github Actions Status](https://github.com/chenqianhe/codegenJupyterLabExt/workflows/Build/badge.svg)](https://github.com/chenqianhe/codegenJupyterLabExt/actions/workflows/build.yml)  --> 
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/chenqianhe/codegenJupyterLabExt/main?urlpath=lab)
+
+A code generation JupyterLab extension based on [CodeGen model](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/examples/code_generation/codegen) and [PaddlePaddle](https://www.paddlepaddle.org.cn/en), which provides **Python code fragment generation**, **Python code generation based on comments**, and other functions.
 
 ## Requirements
 
@@ -9,19 +13,15 @@ A code-gen JupyterLab extension with PaddlePaddle.
 
 ## Install
 
-To install the extension, execute:
+To install the extension, you need to install PaddlePaddle and PaddleNLP according to your own hardware type. 
 
-```bash
-pip install codegen_paddle
-```
+Please refer to [PaddlePaddle Installation](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/install/pip/windows-pip_en.html) and [PaddleNLP Installation](https://github.com/PaddlePaddle/PaddleNLP/blob/develop/README_en.md#installation)
 
-## Uninstall
+Next, please refer to [Development install](https://github.com/chenqianhe/codegenJupyterLabExt/edit/main/README.md#development-install) to complete the installation
 
-To remove the extension, execute:
-
-```bash
-pip uninstall codegen_paddle
-```
+> About why we cannot provide RELEASE installation mode
+>
+> We develop based on PaddlePaddle AI framework, but various AI frameworks have different installation packages when installed on different hardware machines, so we cannot provide a common installation method or package.
 
 ## Contributing
 
@@ -90,7 +90,3 @@ This extension uses [Playwright](https://playwright.dev/docs/intro/) for the int
 More precisely, the JupyterLab helper [Galata](https://github.com/jupyterlab/jupyterlab/tree/master/galata) is used to handle testing the extension in JupyterLab.
 
 More information are provided within the [ui-tests](./ui-tests/README.md) README.
-
-### Packaging the extension
-
-See [RELEASE](RELEASE.md)
