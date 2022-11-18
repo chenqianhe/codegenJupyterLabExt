@@ -50,7 +50,7 @@ class InitModelRouteHandler(APIHandler):
                 config.top_k = top_k
                 config.temperature = temperature
                 config.device = device
-                config.model = model_
+                config.model_name_or_path = model_
             except:
                 config = DefaultConfig()
             generate_config = config
@@ -62,10 +62,10 @@ class InitModelRouteHandler(APIHandler):
                 model = CodeGenForCausalLM.from_pretrained(
                     generate_config.model_name_or_path,
                     load_state_as_np=generate_config.load_state_as_np)
-                return json.dumps({"res": "{}".format('succ')})
+                self.finish(json.dumps({"res": "{}".format('succ')}))
             except:
                 init = True
-                return json.dumps({"res": "{}".format('fail')})
+                self.finish(json.dumps({"res": "{}".format('fail')}))
 
 
 class CodegenRouteHandler(APIHandler):
